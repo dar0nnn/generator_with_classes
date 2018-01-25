@@ -8,14 +8,6 @@ class Test1():
         self.test = test
         self.asdasd = asdasd
 
-        # def __setattr__(self, value, **kwargs):
-        #     vars = [x for x in dir(self) if not x.startswith('_')]
-        #     for var in vars:
-        #         var_ = getattr(self, var)
-        #         if var_ is None:
-        #             self.__dict__[var] = value
-
-
 class Test2(Test1):
     def __init__(self, aqw, *args, **kw):
         super(Test2, self).__init__(*args, **kw)
@@ -31,13 +23,16 @@ class Test2(Test1):
 
 
 dirOfKw = {'test': 123, 'asdasd': 'hello'}
+
 x = (key for key in dirOfKw.keys())
 y = (value for value in dirOfKw.values())
-n = 0
+
 t = Test2(aqw='das')
+
+
 for i in range(0, 2):
     value = x.next()
     classvalue = y.next()
     t.__setattr__(value, classvalue)
-    n += 1
+
 t.message()
