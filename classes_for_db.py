@@ -33,13 +33,14 @@ class Events:
 
 
 class ZCandUS(Events):
-    def __init__(self, zcName=None, operaton=None, services=None, operStatus=None, *args, **kw):
+    def __init__(self, zcName=None, ccName=None, operaton=None, services=None, operStatus=None, *args, **kw):
         super(ZCandUS, self).__init__(*args, **kw)  # init from super class with same params
         # optional params
         self.services = services
         self.operation = operaton
         self.zcName = zcName
         self.operStatus = operStatus
+        self.ccName = ccName
 
 
 class TKO(ZCandUS):
@@ -141,6 +142,25 @@ class MetaData(Events):
         self.message = message
         self.errorMsg = errorMsg
 
+
+addseg_oper_status_changed = ZCandUS(code=u'1.1.1.10', operStatus=None)
+cc_service = ZCandUS(code=u'1.1.1.9', segment=None, services=None, operaton=None)
+tko_changed = TKO(code=u'1.1.1.5.3', message=None)
+tko_oper_status_changed = TKO(code=u'1.1.1.5.5', operStatus=None, errorMsg=None)
+ds_oper_status_changed = OM(code=u'1.1.1.6.12', dsName=None, dsType=None, operStatus=None, errorMsg=None)
+obj_adm_status_changed = OM(code=u'1.1.1.6.11', objName=None, className=None, admStatus=None)
+soft_adm_status_changed = PS(code=u'1.1.1.7.1.8', softName=None, familyName=None, admStatus=None)
+soft_oper_status_changed = PS(code=u'1.1.1.7.1.7', softName=None, familyName=None, operStatus=None, errorMsg=None)
+line_oper_status_changed = LinesAndTract(code=u'1.1.2.6.5', operStatus=None, errorMsg=None, netName=None)
+tr_oper_status_changed = LinesAndTract(code=u'1.1.2.6.6', operStatus=None, errorMsg=None, netName=None)
+person_changed = UsersAndRoles(code=u'1.2.5', personName=None, message=None)
+person_status_changed = UsersAndRoles(code=u'1.2.6', personName=None, personStatus=None)
+work_complite = JournalOfActions(code=u'1.3.2.4', workGUI=None, personName=None)
+work_comment = JournalOfActions(code=u'1.3.2.6', workGUI=None, personName=None)
+document_content_added = Documents(code=u'1.3.3.3', contentName=None)
+document_action_overdue = Documents(code=u'1.3.3.7', actionType=None)
+task_error = MetaData(code=u'1.4.6', taskName=None, errorMsg=None)
+incedent_added = MetaData(code=u'1.4.7', taskName=None, message=None)
 
 if __name__ == '__main__':
     pass
