@@ -143,6 +143,7 @@ class MetaData(Events):
         self.errorMsg = errorMsg
 
 
+# объявления классов шаблонов, для спцефических событий
 addseg_oper_status_changed = ZCandUS(code=u'1.1.1.10', operStatus=None)
 cc_service = ZCandUS(code=u'1.1.1.9', segment=None, services=None, operaton=None)
 tko_changed = TKO(code=u'1.1.1.5.3', message=None)
@@ -161,6 +162,16 @@ document_content_added = Documents(code=u'1.3.3.3', contentName=None)
 document_action_overdue = Documents(code=u'1.3.3.7', actionType=None)
 task_error = MetaData(code=u'1.4.6', taskName=None, errorMsg=None)
 incedent_added = MetaData(code=u'1.4.7', taskName=None, message=None)
+
+listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_status_changed, ds_oper_status_changed,
+                 obj_adm_status_changed,
+                 soft_adm_status_changed, soft_oper_status_changed, line_oper_status_changed, tr_oper_status_changed,
+                 person_changed, person_status_changed, work_complite, work_comment, document_content_added,
+                 document_action_overdue,
+                 task_error, incedent_added]
+codes = (
+    u'1.1.1.10', u'1.1.1.5.9', u'1.1.1.5.5', u'1.1.1.6.12', u'1.1.1.6.11', u'1.1.1.7.1.8', u'1.1.1.7.1.7', u'1.1.2.6.5',
+    u'1.1.2.6.6', u'1.2.5', u'1.2.6', u'1.3.2.4', u'1.3.2.6', u'1.3.3.3', u'1.3.3.7', u'1.4.6', u'1.4.7')
 
 if __name__ == '__main__':
     pass
