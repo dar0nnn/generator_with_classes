@@ -189,23 +189,26 @@ lTypeValues = (ltPHISICAL, ltETHERNET, ltSDH, ltPDF)
 
 
 # created, code, severity, category, sourceType, sourceId
-def createdGen():
+def createdGen():  # рандомная дата
     startdate = datetime.date(2017, 01, 01)
     randomdate = startdate + datetime.timedelta(random.randint(1, 365))
     time = datetime.time(random.randint(1, 23), random.randint(1, 59), random.randint(1, 59))
     return datetime.datetime.combine(randomdate, time)
 
 
-sourceIdValues = eventSourceDic.values()
-stringGen = lambda: ''.join(random.choice(u'йцукенгшщзхъфывапролджэячсмитьбю') for i in range(random.randint(5, 10)))
-category_gen = lambda: random.choice(range(1, 5))
-oper_status_gen = lambda: random.choice(range(1, 5))
-severityGen = lambda: random.choice(range(0, 3))
-sourceTypeGen = lambda: random.choice(range(0, 2))
-sourceIdGen = lambda: (random.choice(sourceIdValues) for i in range(0, len(sourceIdValues)))
-codeGen = lambda: (random.choice(codeForBd) for i in range(0, len(codeForBd)))  # generator!!! .next()
-eventDesc = {'created': createdGen(), 'code': codeGen().next(), 'severity': severityGen(), 'category': category_gen(),
-             'sourceType': sourceTypeGen(), 'sourceId': sourceIdGen().next()}
+sourceIdValues = eventSourceDic.values()  # список id источников события
+stringGen = lambda: ''.join(
+    random.choice(u'йцукенгшщзхъфывапролджэячсмитьбю') for i in range(random.randint(5, 10)))  # рандомный текст
+category_gen = lambda: random.choice(range(1, 5))  # # рандомная категория
+oper_status_gen = lambda: random.choice(range(1, 5))  # рандомный статус
+severityGen = lambda: random.choice(range(0, 3))  # рандомная важность
+sourceTypeGen = lambda: random.choice(range(0, 2))  # рандомный тип источника
+sourceIdGen = lambda: (random.choice(sourceIdValues) for i in
+                       range(0, len(sourceIdValues)))  # generator!!! .next() генерация рандомного id источника
+codeGen = lambda: (random.choice(codeForBd) for i in
+                   range(0, len(codeForBd)))  # generator!!! .next() рандомная генерация кода
+
+# шаблоны событий
 addseg_oper_status_changed = ZCandUS()
 cc_service = ZCandUS()
 tko_changed = TKO()
@@ -225,6 +228,7 @@ document_action_overdue = Documents()
 task_error = MetaData()
 incedent_added = MetaData()
 
+# лист классов событий сверху
 listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_status_changed, ds_oper_status_changed,
                  obj_adm_status_changed,
                  soft_adm_status_changed, soft_oper_status_changed, line_oper_status_changed, tr_oper_status_changed,
@@ -233,22 +237,28 @@ listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_s
                  task_error, incedent_added]
 
 
-def test():
-    for item in listOfClasses:
-        print item, type(item)
-
-
 def generationEvents():
-    codeForMessage = None
-    item = random.choice(listOfClasses)
-    for i in range(0, 6):
-        for key in eventDesc.keys():
-            varName = key
-            if varName is 'code':
-                codeForMessage = eventDesc[varName]
-            varValue = eventDesc[key]
-            item.__setattr__(varName, varValue)
-    return item.messageFromClass(codeForMessage)
+    """генерация классов для описания события и просвоение значения полям этого класса"""
+    codeForMessage = None  # для описания кода
+    item = random.choice(listOfClasses)  # выбор класса из списка
+    eventDesc = {'created': createdGen(), 'code': codeGen().next(), 'severity': severityGen(),
+                 'category': category_gen(),
+                 'sourceType': sourceTypeGen(),
+                 'sourceId': sourceIdGen().next()}  # генерируется словарь значений для полей класса
+    varOfClass = [x for x in dir(item) if
+                  not x.startswith('_') and x != 'messageFromClass']  # получение переменных класса для заполнения
+    for varOfClass_ in varOfClass:  # цикл для пробежки по списку переменных
+        if varOfClass_ in eventDesc.keys():  # проверка есть ли переменная в словаре для заполения
+            for key in eventDesc.keys():  # пробежка по ключам словаря
+                varName = key  # отвечает за название поля класса
+                if varName is 'code':  # для нахождения кода
+                    codeForMessage = eventDesc[
+                        varName]  # и записи его в переменную для описания кода в .messageFromClass
+                varValue = eventDesc[key]  # значение поля класса
+                item.__setattr__(varName, varValue)  # присвоение значения
+            else:
+                continue
+    return item.messageFromClass(codeForMessage)  # возврат словаря поле класса - значение и описания события
 
 
 if __name__ == '__main__':
