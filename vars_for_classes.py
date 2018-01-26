@@ -3,7 +3,8 @@
 import datetime
 import random
 
-from classes_for_db import listOfClasses
+from classes_for_db import ZCandUS, TKO, OM, PS, LinesAndTract, UsersAndRoles, JournalOfActions, \
+    Documents, MetaData
 
 # severity
 esINFO = 0
@@ -23,7 +24,7 @@ estADDSEG = 5
 
 eventSourceDic = {estSERVER: u'сервер',
                   estADMINISTRATOR: u'администратор',
-                  estADDSEG: u'дополнитльный сегмент'}
+                  estADDSEG: u'дополнительный сегмент'}
 # eventCategory
 ecADMINISTRATION = 1
 ecMONITORING = 2
@@ -203,32 +204,64 @@ severityGen = lambda: random.choice(range(0, 3))
 sourceTypeGen = lambda: random.choice(range(0, 2))
 sourceIdGen = lambda: (random.choice(sourceIdValues) for i in range(0, len(sourceIdValues)))
 codeGen = lambda: (random.choice(codeForBd) for i in range(0, len(codeForBd)))  # generator!!! .next()
-eventDesc = {'created': createdGen(), 'code': codeGen().next(), 'severity': severityGen(), 'catregory': category_gen(),
+eventDesc = {'created': createdGen(), 'code': codeGen().next(), 'severity': severityGen(), 'category': category_gen(),
              'sourceType': sourceTypeGen(), 'sourceId': sourceIdGen().next()}
+addseg_oper_status_changed = ZCandUS()
+cc_service = ZCandUS()
+tko_changed = TKO()
+tko_oper_status_changed = TKO()
+ds_oper_status_changed = OM()
+obj_adm_status_changed = OM()
+soft_adm_status_changed = PS()
+soft_oper_status_changed = PS()
+line_oper_status_changed = LinesAndTract()
+tr_oper_status_changed = LinesAndTract()
+person_changed = UsersAndRoles()
+person_status_changed = UsersAndRoles()
+work_complite = JournalOfActions()
+work_comment = JournalOfActions()
+document_content_added = Documents()
+document_action_overdue = Documents()
+task_error = MetaData()
+incedent_added = MetaData()
 
+listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_status_changed, ds_oper_status_changed,
+                 obj_adm_status_changed,
+                 soft_adm_status_changed, soft_oper_status_changed, line_oper_status_changed, tr_oper_status_changed,
+                 person_changed, person_status_changed, work_complite, work_comment, document_content_added,
+                 document_action_overdue,
+                 task_error, incedent_added]
+
+
+def test():
+    for item in listOfClasses:
+        print item, type(item)
 
 def generationEvents():
+    codeForMessage = None
+    item = random.choice(listOfClasses)
     for i in range(0, 6):
-        varName = (key for key in eventDesc.keys())
-        if varName is 'code':
-            codeForMessage = eventDesc[varName]
-        varValue = (value for value in eventDesc.values())
-        item = random.randint(0, len(listOfClasses))
-        event = listOfClasses[item]
-        event.__setattr__(varName, varValue)
-    return event.messageFromClass(codeForMessage)
+        for key in eventDesc.keys():
+            varName = key
+            if varName is 'code':
+                codeForMessage = eventDesc[varName]
+            varValue = eventDesc[key]
+            item.__setattr__(varName, varValue)
+    return item.messageFromClass(codeForMessage)
 
 
-def randomEvent(number):
-    """возвращает рандомный словарь из класса"""
-    # for i in range(0, number):
-    #     list = generationEvents()
-    #     var = list.pop(random(0, len(list) - 1))
-    #     return var
+# def randomEvent(number):
+#     """возвращает рандомный словарь из класса"""
+#     # for i in range(0, number):
+#     #     list = generationEvents()
+#     #     var = list.pop(random(0, len(list) - 1))
+#     #     return var
 
 
 if __name__ == '__main__':
-    for k, v in generationEvents():
+    x = generationEvents()
+    print type(x)
+    for k, v in x.items():
         print k, '-----------', v
         # print type(codeGen())
         # print codeGen().next()
