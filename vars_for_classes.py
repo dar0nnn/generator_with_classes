@@ -39,66 +39,84 @@ eventCategoryDic = {ecADMINISTRATION: u'администрирование',
                     ecFUNCTION: u'функционирование'}
 
 # codes
+# codeForBd = (
+#     u'1.1.1.4', u'1.1.1.6.1', u'1.1.1.6.2', u'1.1.1.6.3', u'1.1.1.6.7', u'1.1.1.6.8', u'1.1.1.6.9', u'1.1.1.6.10',
+#     u'1.1.1.6.12',
+#     u'1.1.1.6.13', u'1.1.1.7.1.1', u'1.1.1.7.1.2', u'1.1.1.7.1.4', u'1.1.1.7.1.5', u'1.1.1.7.1.8', u'1.1.1.7.1.7',
+#     u'1.1.1.7.1.9',
+#     u'1.1.2.6.6', u'1.4.1', u'1.4.2', u'1.4.3', u'1.4.4', u'1.4.5', u'1.4.6', u'1.4.7', u'1.1.1.10', u'1.1.1.1',
+#     u'1.1.1.2',
+#     u'1.1.1.8',
+#     u'1.1.1.9', u'1.1.1.5.1', u'1.1.1.5.2', u'1.1.1.5.3', u'1.1.1.5.5', u'1.1.2.1', u'1.1.2.2', u'1.1.2.5',
+#     u'1.1.2.6.1',
+#     u'1.1.2.6.2',
+#     u'1.2.1', u'1.2.2', u'1.2.3', u'1.2.4', u'1.2.5', u'1.2.6', u'1.3.1.1', u'1.3.2.1', u'1.3.2.2', u'1.3.2.3',
+#     u'1.3.2.4',
+#     u'1.3.2.5', u'1.3.2.6',
+#     u'1.3.3.0', u'1.3.3.1', u'1.3.3.2', u'1.3.3.3', u'1.3.3.4', u'1.3.3.5', u'1.3.3.6', u'1.3.3.7', u'1.3.3.8',
+#     u'1.3.3.9',
+#     u'1.3.3.10', u'1.3.3.11')
+# dictIdDesc = {codeForBd[0]: u'Добавлен УС', codeForBd[1]: u'Удален УС', codeForBd[2]: u'Добавлен ОМ',
+#               codeForBd[3]: u'Удален ОМ',
+#               codeForBd[4]: u'Изменение ОС ОМ',
+#               codeForBd[5]: u'Изменены параметры ОМ',
+#               codeForBd[6]: u'Изменены параметры доступа ОМ', codeForBd[7]: u'Добавлен ИД', codeForBd[8]: u'Удален ИД',
+#               codeForBd[9]: u'Изменение административного состояния ОМ',
+#               codeForBd[10]: u'Изменение ОС ИД', codeForBd[11]: u'Изменены параметры доступа ИД',
+#               codeForBd[12]: u'Добавлено ПС',
+#               codeForBd[13]: u'Удалено ПС', codeForBd[14]: u'Запущено ПС',
+#               codeForBd[15]: u'Остановлено ПС', codeForBd[16]: u'Изменение административного состояния ПС',
+#               codeForBd[17]: u'Изменение ОС ПС',
+#               codeForBd[18]: u'Изменена конфигурация ПС', codeForBd[19]: u'Изменение ОС линии связи',
+#               codeForBd[20]: u'Изменение ОС тракта', codeForBd[21]: u'Добавлен класс метаданных',
+#               codeForBd[22]: u'Удален класс метаданных', codeForBd[23]: u'Добавлено задание',
+#               codeForBd[24]: u'Удалено задание',
+#               codeForBd[25]: u'Выполнено задание',
+#               codeForBd[26]: u'Ошибка выполение задания', codeForBd[27]: u'Обнаружен инцидент',
+#               codeForBd[28]: u'Изменение ОС дополнительного сегмента',
+#               codeForBd[27]: u'Добавлена ЗС', codeForBd[28]: u'Удалена ЗС', codeForBd[29]: u'Изменена структура УС',
+#               codeForBd[30]: u'Изменен перечень служб',
+#               codeForBd[31]: u'Добавлено ТКО', codeForBd[32]: u'Удалено ТКО',
+#               codeForBd[33]: u'Изменена конфигуация ТКО',
+#               codeForBd[34]: u'Изменение ОС ТКО',
+#               codeForBd[35]: u'Добавлена СС', codeForBd[36]: u'Удалена СС', codeForBd[37]: u'Изменена конфигурация СС',
+#               codeForBd[38]: u'Добавлена ЛС (Участок ЛС)',
+#               codeForBd[39]: u'Добавлена должность', codeForBd[40]: u'Удалена должность',
+#               codeForBd[41]: u'Добавлено ДЛ',
+#               codeForBd[42]: u'Удалено ДЛ',
+#               codeForBd[43]: u'Изменены полномочия ДЛ', codeForBd[44]: u'Изменен статус ДЛ',
+#               codeForBd[45]: u'Очищен журнал событий',
+#               codeForBd[46]: u'Очищен журнал действий',
+#               codeForBd[47]: u'Создано действие', codeForBd[48]: u'Просрочено действие',
+#               codeForBd[49]: u'Действие выполнено',
+#               codeForBd[50]: u'Отказ выполнить действие',
+#               codeForBd[51]: u'Изменен комментарий действия', codeForBd[52]: u'Сформирован черновик',
+#               codeForBd[53]: u'Сформирован документ', codeForBd[54]: u'Документ отредактирован',
+#               codeForBd[55]: u'Добавлено вложение', codeForBd[56]: u'Удалено вложение',
+#               codeForBd[57]: u'Документ помещен в архив',
+#               codeForBd[58]: u'Выполнено действие над документом',
+#               codeForBd[59]: u'Просрочено действие над документом', codeForBd[60]: u'Добавлена задача',
+#               codeForBd[61]: u'Удалена задача',
+#               codeForBd[62]: u'Документ отправлен по почте',
+#               codeForBd[63]: u'Вложение выгружено на диск'}
+
 codeForBd = (
-    u'1.1.1.4', u'1.1.1.6.1', u'1.1.1.6.2', u'1.1.1.6.3', u'1.1.1.6.7', u'1.1.1.6.8', u'1.1.1.6.9', u'1.1.1.6.10',
-    u'1.1.1.6.12',
-    u'1.1.1.6.13', u'1.1.1.7.1.1', u'1.1.1.7.1.2', u'1.1.1.7.1.4', u'1.1.1.7.1.5', u'1.1.1.7.1.8', u'1.1.1.7.1.7',
-    u'1.1.1.7.1.9',
-    u'1.1.2.6.6', u'1.4.1', u'1.4.2', u'1.4.3', u'1.4.4', u'1.4.5', u'1.4.6', u'1.4.7', u'1.1.1.10', u'1.1.1.1',
-    u'1.1.1.2',
-    u'1.1.1.8',
-    u'1.1.1.9', u'1.1.1.5.1', u'1.1.1.5.2', u'1.1.1.5.3', u'1.1.1.5.5', u'1.1.2.1', u'1.1.2.2', u'1.1.2.5',
-    u'1.1.2.6.1',
-    u'1.1.2.6.2',
-    u'1.2.1', u'1.2.2', u'1.2.3', u'1.2.4', u'1.2.5', u'1.2.6', u'1.3.1.1', u'1.3.2.1', u'1.3.2.2', u'1.3.2.3',
-    u'1.3.2.4',
-    u'1.3.2.5', u'1.3.2.6',
-    u'1.3.3.0', u'1.3.3.1', u'1.3.3.2', u'1.3.3.3', u'1.3.3.4', u'1.3.3.5', u'1.3.3.6', u'1.3.3.7', u'1.3.3.8',
-    u'1.3.3.9',
-    u'1.3.3.10', u'1.3.3.11')
-dictIdDesc = {codeForBd[0]: u'Добавлен УС', codeForBd[1]: u'Удален УС', codeForBd[2]: u'Добавлен ОМ',
-              codeForBd[3]: u'Удален ОМ',
-              codeForBd[4]: u'Изменение ОС ОМ',
-              codeForBd[5]: u'Изменены параметры ОМ',
-              codeForBd[6]: u'Изменены параметры доступа ОМ', codeForBd[7]: u'Добавлен ИД', codeForBd[8]: u'Удален ИД',
-              codeForBd[9]: u'Изменение административного состояния ОМ',
-              codeForBd[10]: u'Изменение ОС ИД', codeForBd[11]: u'Изменены параметры доступа ИД',
-              codeForBd[12]: u'Добавлено ПС',
-              codeForBd[13]: u'Удалено ПС', codeForBd[14]: u'Запущено ПС',
-              codeForBd[15]: u'Остановлено ПС', codeForBd[16]: u'Изменение административного состояния ПС',
-              codeForBd[17]: u'Изменение ОС ПС',
-              codeForBd[18]: u'Изменена конфигурация ПС', codeForBd[19]: u'Изменение ОС линии связи',
-              codeForBd[20]: u'Изменение ОС тракта', codeForBd[21]: u'Добавлен класс метаданных',
-              codeForBd[22]: u'Удален класс метаданных', codeForBd[23]: u'Добавлено задание',
-              codeForBd[24]: u'Удалено задание',
-              codeForBd[25]: u'Выполнено задание',
-              codeForBd[26]: u'Ошибка выполение задания', codeForBd[27]: u'Обнаружен инцидент',
-              codeForBd[28]: u'Изменение ОС дополнительного сегмента',
-              codeForBd[27]: u'Добавлена ЗС', codeForBd[28]: u'Удалена ЗС', codeForBd[29]: u'Изменена структура УС',
-              codeForBd[30]: u'Изменен перечень служб',
-              codeForBd[31]: u'Добавлено ТКО', codeForBd[32]: u'Удалено ТКО',
-              codeForBd[33]: u'Изменена конфигуация ТКО',
-              codeForBd[34]: u'Изменение ОС ТКО',
-              codeForBd[35]: u'Добавлена СС', codeForBd[36]: u'Удалена СС', codeForBd[37]: u'Изменена конфигурация СС',
-              codeForBd[38]: u'Добавлена ЛС (Участок ЛС)',
-              codeForBd[39]: u'Добавлена должность', codeForBd[40]: u'Удалена должность',
-              codeForBd[41]: u'Добавлено ДЛ',
-              codeForBd[42]: u'Удалено ДЛ',
-              codeForBd[43]: u'Изменены полномочия ДЛ', codeForBd[44]: u'Изменен статус ДЛ',
-              codeForBd[45]: u'Очищен журнал событий',
-              codeForBd[46]: u'Очищен журнал действий',
-              codeForBd[47]: u'Создано действие', codeForBd[48]: u'Просрочено действие',
-              codeForBd[49]: u'Действие выполнено',
-              codeForBd[50]: u'Отказ выполнить действие',
-              codeForBd[51]: u'Изменен комментарий действия', codeForBd[52]: u'Сформирован черновик',
-              codeForBd[53]: u'Сформирован документ', codeForBd[54]: u'Документ отредактирован',
-              codeForBd[55]: u'Добавлено вложение', codeForBd[56]: u'Удалено вложение',
-              codeForBd[57]: u'Документ помещен в архив',
-              codeForBd[58]: u'Выполнено действие над документом',
-              codeForBd[59]: u'Просрочено действие над документом', codeForBd[60]: u'Добавлена задача',
-              codeForBd[61]: u'Удалена задача',
-              codeForBd[62]: u'Документ отправлен по почте',
-              codeForBd[63]: u'Вложение выгружено на диск'}
+    u'1.1.1.10', u'1.1.1.9', u'1.1.1.5.5', u'1.1.1.6.12', u'1.1.1.6.11', u'1.1.1.7.1.8', u'1.1.1.7.1.7', u'1.1.2.6.5',
+    u'1.1.2.6.6', u'1.2.5', u'1.2.6', u'1.3.2.4', u'1.3.2.6', u'1.3.3.3', u'1.3.3.7', u'1.4.6', u'1.4.7')
+
+dictIdDesc = {codeForBd[0]: u'Изменение ОС дополнительного сегмента', codeForBd[1]: u'Изменен перечень служб',
+              codeForBd[2]: u'Изменение ОС ТКО', codeForBd[3]: u'Изменение ОС ИД',
+              codeForBd[4]: u'Изменение административного состояния ОМ',
+              codeForBd[5]: u'Изменение административного состояния ПС', codeForBd[6]: u'Изменение ОС ПС',
+              codeForBd[7]: u'Изменение ОС линии связи',
+              codeForBd[8]: u'Изменение ОС тракта', codeForBd[9]: u'Изменены полномочия ДЛ',
+              codeForBd[10]: u'Изменен статус ДЛ',
+              codeForBd[11]: u"Действие выполнено", codeForBd[12]: u"Изменен комментарий действия",
+              codeForBd[13]: u"Добавлено вложение",
+              codeForBd[14]: u"Просрочено действие над документом", codeForBd[15]: u'Ошибка выполнения задания',
+              codeForBd[16]: u'Обнаружен инцидент'}
+
+
 # oper status
 osUNDEFINED = 0
 osNORM = 1
@@ -207,6 +225,14 @@ sourceIdGen = lambda: (random.choice(sourceIdValues) for i in
                        range(0, len(sourceIdValues)))  # generator!!! .next() генерация рандомного id источника
 codeGen = lambda: (random.choice(codeForBd) for i in
                    range(0, len(codeForBd)))  # generator!!! .next() рандомная генерация кода
+operationGen = lambda: random.choice(range(0, 1))
+
+# {'created': createdGen(), 'code': codeGen().next(), 'severity': severityGen(),
+#  'category': category_gen(),
+#  'sourceType': sourceTypeGen(),
+#  'sourceId': sourceIdGen().next(), 'zcName': stringGen, 'ccName': stringGen, 'services': operationGen,
+#  'operStatusMessage': stringGen, 'errorMsg': stringGen, 'objName': stringGen, 'className': stringGen,
+#  'dsName': stringGen, 'dsType': stringGen, 'operStatus': oper_status_gen, 'admStatus': stringGen,'softName': stringGen}
 
 # шаблоны событий
 addseg_oper_status_changed = ZCandUS()
@@ -244,20 +270,22 @@ def generationEvents():
     eventDesc = {'created': createdGen(), 'code': codeGen().next(), 'severity': severityGen(),
                  'category': category_gen(),
                  'sourceType': sourceTypeGen(),
-                 'sourceId': sourceIdGen().next()}  # генерируется словарь значений для полей класса
+                 'sourceId': sourceIdGen().next(), 'zcName': stringGen(), 'ccName': stringGen(), 'services': operationGen(),
+                 'operStatusMessage': stringGen(), 'errorMsg': stringGen(), 'objName': stringGen(), 'className': stringGen(),
+                 'dsName': stringGen(), 'dsType': stringGen(), 'operStatus': oper_status_gen(), 'admStatus': stringGen(),
+                 'softName': stringGen()}  # генерируется словарь значений для полей класса
     varOfClass = [x for x in dir(item) if
                   not x.startswith('_') and x != 'messageFromClass']  # получение переменных класса для заполнения
-    for varOfClass_ in varOfClass:  # цикл для пробежки по списку переменных
-        if varOfClass_ in eventDesc.keys():  # проверка есть ли переменная в словаре для заполения
-            for key in eventDesc.keys():  # пробежка по ключам словаря
-                varName = key  # отвечает за название поля класса
-                if varName is 'code':  # для нахождения кода
-                    codeForMessage = eventDesc[
-                        varName]  # и записи его в переменную для описания кода в .messageFromClass
-                varValue = eventDesc[key]  # значение поля класса
-                item.__setattr__(varName, varValue)  # присвоение значения
-            else:
-                continue
+    for key in eventDesc.keys():  # пробежка по ключам словаря
+        if key in varOfClass: # сравнение ключа с переменной, содержащейся в классе
+            varName = key  # отвечает за название поля класса
+            if varName is 'code':  # для нахождения кода
+                codeForMessage = eventDesc[
+                    varName]  # и записи его в переменную для описания кода в .messageFromClass
+            varValue = eventDesc[key]  # значение поля класса
+            item.__setattr__(varName, varValue)  # присвоение значения
+        else:
+            continue
     return item.messageFromClass(codeForMessage)  # возврат словаря поле класса - значение и описания события
 
 
@@ -266,11 +294,3 @@ if __name__ == '__main__':
     print type(x)
     for k, v in x.items():
         print k, '-----------', v
-        # print type(codeGen())
-        # print codeGen().next()
-        # print stringGen()
-        # print category_gen()
-        # print oper_status_gen()
-        # print createdGen()
-        # print severityGen()
-        # print sourceTypeGen()
