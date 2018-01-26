@@ -3,7 +3,6 @@ from abc import ABCMeta
 
 
 class Events(object):
-
     def __init__(self, created=None, code=None, severity=None, category=None, sourceType=None, sourceId=None):
         self.created = created  # date of creation
         self.code = code  # code
@@ -13,6 +12,7 @@ class Events(object):
         self.sourceId = sourceId  # source id
 
     def messageFromClass(self, description):  # returning event with dic in child classes
+        """возврат словаря поле класса - значение и описания события"""
         attrsNamesList = ['created', 'code', 'category', 'sourceType', 'sourceId', 'severity']
         vars = [x for x in dir(self) if
                 not x.startswith('_') and x != 'messageFromClass']  # getting all vars of class to dic
@@ -84,14 +84,14 @@ class NetworkConnections(Events):
 
 
 class LinesAndTract(NetworkConnections):
-    def __init__(self, lName=None, lType=None, ipFrom=None,
-                 ipTo=None,
+    def __init__(self, lName=None, lType=None, lpFrom=None,
+                 lpTo=None,
                  ccName=None, segment=None, operStatus=None, errorMsg=None, parent=None):
         super(LinesAndTract, self).__init__(parent)
         self.lName = lName
         self.lType = lType
-        self.ipFrom = ipFrom
-        self.ipTo = ipTo
+        self.lpFrom = lpFrom
+        self.lpTo = lpTo
         self.ccName = ccName
         self.segment = segment
         self.operStatus = operStatus
@@ -141,35 +141,7 @@ class MetaData(Events):
         self.errorMsg = errorMsg
 
 
-# объявления классов шаблонов, для спцефических событий
-# addseg_oper_status_changed = getattr(ZCandUS(operStatus=None))
-# cc_service = getattr(ZCandUS(segment=None, services=None, operaton=None))
-# tko_changed = getattr(TKO(code=u'1.1.1.5.3', message=None))
-# tko_oper_status_changed = getattr(TKO(code=u'1.1.1.5.5', operStatus=None, errorMsg=None))
-# ds_oper_status_changed = getattr(OM(dsName=None, dsType=None, operStatus=None, errorMsg=None))
-# obj_adm_status_changed = getattr(OM(objName=None, className=None, admStatus=None))
-# soft_adm_status_changed = getattr(PS(softName=None, familyName=None, admStatus=None))
-# soft_oper_status_changed = getattr(PS(softName=None, familyName=None, operStatus=None, errorMsg=None))
-# line_oper_status_changed = getattr(LinesAndTract(operStatus=None, errorMsg=None, netName=None))
-# tr_oper_status_changed = getattr(LinesAndTract(operStatus=None, errorMsg=None, netName=None))
-# person_changed = getattr(UsersAndRoles(personName=None, message=None))
-# person_status_changed = getattr(UsersAndRoles(personName=None, personStatus=None))
-# work_complite = getattr(JournalOfActions(workGUI=None, personName=None))
-# work_comment = getattr(JournalOfActions(workGUI=None, personName=None))
-# document_content_added = getattr(Documents(contentName=None))
-# document_action_overdue = getattr(Documents(code=u'1.3.3.7', actionType=None))
-# task_error = getattr(MetaData(code=u'1.4.6', taskName=None, errorMsg=None))
-# incedent_added = getattr(MetaData(code=u'1.4.7', taskName=None, message=None))
-#
-# listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_status_changed, ds_oper_status_changed,
-#                  obj_adm_status_changed,
-#                  soft_adm_status_changed, soft_oper_status_changed, line_oper_status_changed, tr_oper_status_changed,
-#                  person_changed, person_status_changed, work_complite, work_comment, document_content_added,
-#                  document_action_overdue,
-#                  task_error, incedent_added]
-# codes = (
-#     u'1.1.1.10', u'1.1.1.5.9', u'1.1.1.5.5', u'1.1.1.6.12', u'1.1.1.6.11', u'1.1.1.7.1.8', u'1.1.1.7.1.7', u'1.1.2.6.5',
-#     u'1.1.2.6.6', u'1.2.5', u'1.2.6', u'1.3.2.4', u'1.3.2.6', u'1.3.3.3', u'1.3.3.7', u'1.4.6', u'1.4.7')
+
 
 if __name__ == '__main__':
     print type(ZCandUS())

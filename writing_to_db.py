@@ -4,8 +4,9 @@ from pymongo import MongoClient
 from vars_for_classes import generationEvents
 
 
-def timeit(method):  # замер времени
+def timeit(method):
     def timed(*args, **kw):
+        """замер времени"""
         ts = time.time()
         result = method(*args, **kw)
         te = time.time()
@@ -26,13 +27,11 @@ except Exception as e:
 
 @timeit
 def insertingIntoBD(numbers):
+    """вставка событий в бд"""
     for i in xrange(numbers):
         db.Events.insert(generationEvents())
         if i % 1000 == 0:
             print 'прошло 1000 записей'
-    # for event in events.find({}).limit(5):
-    #     for k, v in event.items():
-    #         print k, v
     print 'program finished'
     client.close()
 
