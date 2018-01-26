@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import time
 from pymongo import MongoClient
-from vars_for_classes import randomEvent
+from vars_for_classes import generationEvents
 
 
 def timeit(method):  # замер времени
@@ -24,22 +24,15 @@ except Exception as e:
     print e
     client.close()
 
-
 @timeit
-def gen(numbers):
-    """вставка в бд случайных событий"""
-    n = 0
-    while n < numbers:
-        db.Events.insert(randomEvent(numbers))
-        n += 1
-
-
-@timeit
-def main(numbers):
-    gen(numbers)
-    for event in events.find({}).limit(5):
-        for k, v in event.items():
-            print k, v
+def insertingIntoBD(numbers):
+    for i in xrange(numbers):
+        db.Events.insert(generationEvents())
+        if i % 1000 == 0:
+            print 'прошло 1000 записей'
+    # for event in events.find({}).limit(5):
+    #     for k, v in event.items():
+    #         print k, v
     print 'program finished'
     client.close()
 
@@ -47,6 +40,6 @@ def main(numbers):
 if __name__ == '__main__':
     numbers = int(raw_input('> '))
     try:
-        main(numbers)
+        insertingIntoBD(numbers)
     finally:
         client.close()

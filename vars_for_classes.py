@@ -237,6 +237,7 @@ def test():
     for item in listOfClasses:
         print item, type(item)
 
+
 def generationEvents():
     codeForMessage = None
     item = random.choice(listOfClasses)
@@ -248,14 +249,6 @@ def generationEvents():
             varValue = eventDesc[key]
             item.__setattr__(varName, varValue)
     return item.messageFromClass(codeForMessage)
-
-
-# def randomEvent(number):
-#     """возвращает рандомный словарь из класса"""
-#     # for i in range(0, number):
-#     #     list = generationEvents()
-#     #     var = list.pop(random(0, len(list) - 1))
-#     #     return var
 
 
 if __name__ == '__main__':
