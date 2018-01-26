@@ -206,6 +206,7 @@ ltPDF = 3
 lTypeValues = (ltPHISICAL, ltETHERNET, ltSDH, ltPDF)
 
 
+
 # created, code, severity, category, sourceType, sourceId
 def createdGen():  # рандомная дата
     startdate = datetime.date(2017, 01, 01)
