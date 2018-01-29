@@ -15,7 +15,8 @@ eventSourceDic = {estSERVER: u'сервер',
                   estADDSEG: u'дополнительный сегмент'}
 
 codeForBd = (
-    u'1.1.1.10', u'1.1.1.9', u'1.1.1.5.5', u'1.1.1.6.12', u'1.1.1.6.11', u'1.1.1.7.1.8', u'1.1.1.7.1.7', u'1.1.2.6.5',
+    u'1.1.1.10', u'1.1.1.9', u'1.1.1.5.3' u'1.1.1.5.5', u'1.1.1.6.12', u'1.1.1.6.11', u'1.1.1.7.1.8', u'1.1.1.7.1.7',
+    u'1.1.2.6.5',
     u'1.1.2.6.6', u'1.2.5', u'1.2.6', u'1.3.2.4', u'1.3.2.6', u'1.3.3.3', u'1.3.3.7', u'1.4.6', u'1.4.7')
 
 dictIdDesc = {codeForBd[0]: u'Изменение ОС дополнительного сегмента', codeForBd[1]: u'Изменен перечень служб',
@@ -60,24 +61,25 @@ actionTypeGen = lambda: random.choice(range(0, 13))
 emailGen = lambda: ''.join(random.choice(u'qwertyuiopasdfghjklzxcvbnm@') for i in range(random.randint(5, 10)))
 
 # шаблоны событий
-addseg_oper_status_changed = ZCandUS()
-cc_service = ZCandUS()
-tko_changed = TKO()
-tko_oper_status_changed = TKO()
-ds_oper_status_changed = OM()
-obj_adm_status_changed = OM()
-soft_adm_status_changed = PS()
-soft_oper_status_changed = PS()
-line_oper_status_changed = LinesAndTract()
-tr_oper_status_changed = LinesAndTract()
-person_changed = UsersAndRoles()
-person_status_changed = UsersAndRoles()
-work_complite = JournalOfActions()
-work_comment = JournalOfActions()
-document_content_added = Documents()
-document_action_overdue = Documents()
-task_error = MetaData()
-incedent_added = MetaData()
+
+addseg_oper_status_changed = ZCandUS(code=u'1.1.1.10', operaton=None, services=None, segment=None)
+cc_service = ZCandUS(code=u'1.1.1.9')
+tko_changed = TKO(code=u'1.1.1.5.3',operStatus=None, errorMsg=None)
+tko_oper_status_changed = TKO(code=u'1.1.1.5.5', message=None )
+ds_oper_status_changed = OM(code=u'1.1.1.6.12', )
+obj_adm_status_changed = OM(code=u'1.1.1.6.11')
+soft_adm_status_changed = PS(code=u'1.1.1.7.1.8')
+soft_oper_status_changed = PS(code=u'1.1.1.7.1.7')
+line_oper_status_changed = LinesAndTract(code=u'1.1.2.6.5')
+tr_oper_status_changed = LinesAndTract(code=u'1.1.2.6.6')
+person_changed = UsersAndRoles(code=u'1.2.5')
+person_status_changed = UsersAndRoles(code=u'1.2.6')
+work_complite = JournalOfActions(code=u'1.3.2.4')
+work_comment = JournalOfActions(code=u'1.3.2.6')
+document_content_added = Documents(code=u'1.3.3.3')
+document_action_overdue = Documents(code=u'1.3.3.7')
+task_error = MetaData(code=u'1.4.6')
+incedent_added = MetaData(code=u'1.4.7')
 
 # лист классов событий сверху
 listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_status_changed, ds_oper_status_changed,

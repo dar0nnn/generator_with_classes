@@ -3,7 +3,7 @@ from abc import ABCMeta
 
 
 class Events(object):
-    def __init__(self, created=None, code=None, severity=None, category=None, sourceType=None, sourceId=None):
+    def __init__(self, created, code, severity, category, sourceType, sourceId):
         self.created = created  # date of creation
         self.code = code  # code
         self.severity = severity  # severity
@@ -32,7 +32,7 @@ class Events(object):
 
 
 class ZCandUS(Events):
-    def __init__(self, zcName=None, ccName=None, operaton=None, services=None, operStatus=None, parent=None):
+    def __init__(self, code, zcName, ccName, operaton, services, segment, operStatus, parent=None):
         super(ZCandUS, self).__init__(parent)  # init from super class with same params
         # optional params
         self.services = services
@@ -40,11 +40,12 @@ class ZCandUS(Events):
         self.zcName = zcName
         self.operStatus = operStatus
         self.ccName = ccName
+        self.segment = segment
 
 
 class TKO(ZCandUS):
-    def __init__(self, segment=None, unitName=None, unitType=None,
-                 message=None, errorMsg=None, parent=None):
+    def __init__(self, code, message, errorMsg, operStatus, segment=None, unitName=None, unitType=None,
+                  parent=None):
         super(TKO, self).__init__(parent)
         self.segment = segment
         self.unitName = unitName
@@ -54,9 +55,9 @@ class TKO(ZCandUS):
 
 
 class OM(ZCandUS):
-    def __init__(self, objName=None, className=None,
-                 dsName=None, dsType=None,
-                 admStatus=None, errorMsg=None, parent=None):
+    def __init__(self,code, operStatus, objName, className,
+                 dsName, dsType,
+                 admStatus, errorMsg, parent=None):
         super(OM, self).__init__(parent)
         self.objName = objName
         self.className = className
@@ -67,9 +68,9 @@ class OM(ZCandUS):
 
 
 class PS(ZCandUS):
-    def __init__(self, zcName=None, softName=None, familyName=None,
-                 operStatus=None,
-                 admStatus=None, errorMsg=None, parent=None):
+    def __init__(self,code, zcName, softName, familyName,
+                 operStatus,
+                 admStatus, errorMsg, parent=None):
         super(PS, self).__init__(zcName, operStatus, parent)
         self.softName = softName
         self.familyName = familyName
@@ -78,15 +79,15 @@ class PS(ZCandUS):
 
 
 class NetworkConnections(Events):
-    def __init__(self, netName=None, parent=None):
+    def __init__(self, code,netName, parent=None):
         super(NetworkConnections, self).__init__(parent)
         self.netName = netName
 
 
 class LinesAndTract(NetworkConnections):
-    def __init__(self, lName=None, lType=None, lpFrom=None,
-                 lpTo=None,
-                 ccName=None, segment=None, operStatus=None, errorMsg=None, parent=None):
+    def __init__(self,code, lName, lType, lpFrom,
+                 lpTo,
+                 ccName, segment, operStatus, errorMsg, parent=None):
         super(LinesAndTract, self).__init__(parent)
         self.lName = lName
         self.lType = lType
@@ -99,8 +100,8 @@ class LinesAndTract(NetworkConnections):
 
 
 class UsersAndRoles(Events):
-    def __init__(self, postName=None, personName=None,
-                 personStatus=None, message=None, parent=None):
+    def __init__(self,code, postName, personName,
+                 personStatus, message, parent=None):
         super(UsersAndRoles, self).__init__(parent)
         self.postName = postName
         self.personName = personName
@@ -109,20 +110,20 @@ class UsersAndRoles(Events):
 
 
 class JournalOfEvents(Events):
-    def __init__(self, parent=None):
+    def __init__(self,code, parent=None):
         super(JournalOfEvents, self).__init__(parent)
 
 
 class JournalOfActions(Events):
-    def __init__(self, workGUI=None, personName=None, parent=None):
+    def __init__(self,code, workGUI, personName, parent=None):
         super(JournalOfActions, self).__init__(parent)
         self.workGUI = workGUI
         self.personName = personName
 
 
 class Documents(Events):
-    def __init__(self, docName=None, docType=None, contentName=None,
-                 actionType=None, email=None, parent=None):
+    def __init__(self,code, docName, docType, contentName,
+                 actionType, email, parent=None):
         super(Documents, self).__init__(parent)
         self.docName = docName
         self.docType = docType
@@ -132,9 +133,9 @@ class Documents(Events):
 
 
 class MetaData(Events):
-    def __init__(self, metaName=None, taskName=None, message=None,
-                 errorMsg=None, *args, **kw):
-        super(MetaData, self).__init__(*args, **kw)
+    def __init__(self,code, metaName, taskName, message,
+                 errorMsg, parent):
+        super(MetaData, self).__init__(parent)
         self.metaName = metaName
         self.taskName = taskName
         self.message = message
