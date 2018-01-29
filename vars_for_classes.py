@@ -109,7 +109,6 @@ listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_s
 
 def generationEvents():
     """генерация классов для описания события и просвоение значения полям этого класса"""
-    # codeForMessage = codeGen().next()  # для описания кода
     item = random.choice(listOfClasses)  # выбор класса из списка
     varOfClass = {x for x in dir(item) if
                   not x.startswith('_') and x != 'messageFromClass'}  # переменные конретного класса в множестве
