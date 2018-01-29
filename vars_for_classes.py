@@ -100,7 +100,6 @@ def generationEvents():
                  'message': stringGen(), 'errorMsg': stringGen(), 'objName': stringGen(),
                  'className': stringGen(),
                  'dsName': stringGen(), 'dsType': stringGen(), 'operStatus': oper_status_gen(),
-                 'admStatus': stringGen(),
                  'softName': stringGen(), 'familyName': stringGen(), 'admStatus': admStatusGen(),
                  'postName': stringGen(),
                  'personName': stringGen(), 'personStatus': personStatusGen(), 'workGUI': stringGen(),
@@ -121,7 +120,8 @@ def generationEvents():
             item.__setattr__(varName, varValue)  # присвоение значения
         else:
             continue
-    return item.messageFromClass(dictIdDesc[codeForMessage])  # возврат словаря поле класса - значение и описания события
+    return item.messageFromClass(
+        dictIdDesc[codeForMessage])  # возврат словаря поле класса - значение и описания события
 
 
 if __name__ == '__main__':
