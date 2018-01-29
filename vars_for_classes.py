@@ -2,7 +2,6 @@
 
 import datetime
 import random
-
 from classes_for_db import ZCandUS, TKO, OM, PS, LinesAndTract, UsersAndRoles, JournalOfActions, \
     Documents, MetaData
 
@@ -58,8 +57,7 @@ lTypeGen = lambda: random.choice(range(0, 3))
 segmentGen = lambda: random.choice(range(0, 1))
 docTypeGen = lambda: random.choice(range(0, 8))
 actionTypeGen = lambda: random.choice(range(0, 13))
-emailGen = lambda: ''.join(
-    random.choice(u'qwertyuiopasdfghjklzxcvbnm@') for i in range(random.randint(5, 10)))
+emailGen = lambda: ''.join(random.choice(u'qwertyuiopasdfghjklzxcvbnm@') for i in range(random.randint(5, 10)))
 
 # шаблоны событий
 addseg_oper_status_changed = ZCandUS()
@@ -123,7 +121,7 @@ def generationEvents():
             item.__setattr__(varName, varValue)  # присвоение значения
         else:
             continue
-    return item.messageFromClass(codeForMessage)  # возврат словаря поле класса - значение и описания события
+    return item.messageFromClass(dictIdDesc[codeForMessage])  # возврат словаря поле класса - значение и описания события
 
 
 if __name__ == '__main__':
