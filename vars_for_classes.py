@@ -16,7 +16,27 @@ eventSourceDic = {estSERVER: u'сервер',
 
 codeForBd = (
     u'1.1.1.10', u'1.1.1.9', u'1.1.1.5.5', u'1.1.1.6.12', u'1.1.1.6.11', u'1.1.1.7.1.8', u'1.1.1.7.1.7', u'1.1.2.6.5',
-    u'1.1.2.6.6', u'1.2.5', u'1.2.6', u'1.3.2.4', u'1.3.2.6', u'1.3.3.3', u'1.3.3.7', u'1.4.6', u'1.4.7')
+    u'1.1.2.6.6', u'1.2.5', u'1.2.6', u'1.3.2.4', u'1.3.2.6', u'1.3.3.3', u'1.3.3.7', u'1.4.6', u'1.4.7', u'1.1.1.5.3')
+
+paramsForCodes = {codeForBd[0]: (u'operStatus', u'zcName', u'ccName'),
+                  codeForBd[1]: (u'segment', u'services', u'operation', u'zcName'),
+                  codeForBd[2]: (
+                  u'operStatus', u'errorMsg', u'segment', u'unitName', u'unitType', u'zcName', u'ccName'),
+                  codeForBd[3]: (u'dsName', u'dsType', u'operStatus', u'errorMsg', u'zcName', u'ccName'),
+                  codeForBd[4]: (u'objName', u'className', u'admStatus', u'zcName', u'ccName'),
+                  codeForBd[5]: (u'admStatus', u'softName', u'familyName', u'zcName', u'ccName'),
+                  codeForBd[6]: (u'operStatus', u'errorMsg', u'softName', u'familyName', u'zcName', u'ccName'),
+                  codeForBd[7]: (u'ccName', u'segment', u'operStatus', u'errorMsg', u'lName', u'lType', u'netName'),
+                  codeForBd[8]: (u'ccName', u'segment', u'operStatus', u'errorMsg',  u'lName', u'lType', u'netName'),
+                  codeForBd[9]: (u'personName', u'message', u'postName'),
+                  codeForBd[10]: (u'personName', u'personStatus', u'postName'),
+                  codeForBd[11]: (u'workGUI', u'personName'),
+                  codeForBd[12]: (u'workGUI', u'personName'),
+                  codeForBd[13]: (u'docName', u'docType', u'contentName'),
+                  codeForBd[14]: (u'docName', u'docType', u'actionType'),
+                  codeForBd[15]: (u'metaName', u'taskName', u'errorMsg'),
+                  codeForBd[16]: (u'metaName', u'taskName', u'message'),
+                  codeForBd[17]: (u'message', u'segment', u'unitName', u'unitType', u'zcName', u'ccName')}
 
 dictIdDesc = {codeForBd[0]: u'Изменение ОС дополнительного сегмента', codeForBd[1]: u'Изменен перечень служб',
               codeForBd[2]: u'Изменение ОС ТКО', codeForBd[3]: u'Изменение ОС ИД',
@@ -28,7 +48,7 @@ dictIdDesc = {codeForBd[0]: u'Изменение ОС дополнительно
               codeForBd[11]: u"Действие выполнено", codeForBd[12]: u"Изменен комментарий действия",
               codeForBd[13]: u"Добавлено вложение",
               codeForBd[14]: u"Просрочено действие над документом", codeForBd[15]: u'Ошибка выполнения задания',
-              codeForBd[16]: u'Обнаружен инцидент'}
+              codeForBd[16]: u'Обнаружен инцидент', codeForBd[17]: u'Изменена конфигурация ТКО'}
 
 
 # created, code, severity, category, sourceType, sourceId
@@ -57,7 +77,6 @@ lTypeGen = lambda: random.choice(range(0, 3))
 segmentGen = lambda: random.choice(range(0, 1))
 docTypeGen = lambda: random.choice(range(0, 8))
 actionTypeGen = lambda: random.choice(range(0, 13))
-emailGen = lambda: ''.join(random.choice(u'qwertyuiopasdfghjklzxcvbnm@') for i in range(random.randint(5, 10)))
 
 # шаблоны событий
 addseg_oper_status_changed = ZCandUS()
@@ -90,34 +109,33 @@ listOfClasses = [addseg_oper_status_changed, cc_service, tko_changed, tko_oper_s
 
 def generationEvents():
     """генерация классов для описания события и просвоение значения полям этого класса"""
-    codeForMessage = None  # для описания кода
+    codeForMessage = codeGen().next()  # для описания кода
     item = random.choice(listOfClasses)  # выбор класса из списка
-    eventDesc = {'created': createdGen(), 'code': codeGen().next(), 'severity': severityGen(),
-                 'category': category_gen(),
-                 'sourceType': sourceTypeGen(),
-                 'sourceId': sourceIdGen().next(), 'zcName': stringGen(), 'ccName': stringGen(),
-                 'services': operationGen(),
-                 'message': stringGen(), 'errorMsg': stringGen(), 'objName': stringGen(),
-                 'className': stringGen(),
-                 'dsName': stringGen(), 'dsType': stringGen(), 'operStatus': oper_status_gen(),
-                 'softName': stringGen(), 'familyName': stringGen(), 'admStatus': admStatusGen(),
-                 'postName': stringGen(),
-                 'personName': stringGen(), 'personStatus': personStatusGen(), 'workGUI': stringGen(),
-                 'lName': stringGen(), 'lType': lTypeGen(),
-                 'lpFrom': stringGen(), 'lpTo': stringGen(), 'segment': segmentGen(), 'docName': stringGen(),
-                 'docType': docTypeGen(),
-                 'contentName': stringGen(), 'actionType': actionTypeGen(), 'email': emailGen(),
-                 'metaName': stringGen(), 'taskName': stringGen()}  # генерируется словарь значений для полей класса
-    varOfClass = [x for x in dir(item) if
-                  not x.startswith('_') and x != 'messageFromClass']  # получение переменных класса для заполнения
+    setOfParams = {u'created', u'code', u'severity', u'category', u'sourceType', u'sourceId'}
+    for i in paramsForCodes[codeForMessage]:
+        setOfParams.add(i)
+    eventDesc = {u'created': createdGen(), u'code': codeForMessage, u'severity': severityGen(),
+                 u'category': category_gen(),
+                 u'sourceType': sourceTypeGen(),
+                 u'sourceId': sourceIdGen().next(), u'zcName': stringGen(), u'ccName': stringGen(),
+                 u'services': operationGen(),
+                 u'message': stringGen(), u'errorMsg': stringGen(), u'objName': stringGen(),
+                 u'className': stringGen(),
+                 u'dsName': stringGen(), u'dsType': stringGen(), u'operStatus': oper_status_gen(),
+                 u'softName': stringGen(), u'familyName': stringGen(), u'admStatus': admStatusGen(),
+                 u'postName': stringGen(),
+                 u'personName': stringGen(), u'personStatus': personStatusGen(), u'workGUI': stringGen(),
+                 u'lName': stringGen(), u'lType': lTypeGen(),
+                 u'lpFrom': stringGen(), u'lpTo': stringGen(), u'segment': segmentGen(), u'docName': stringGen(),
+                 u'docType': docTypeGen(),
+                 u'contentName': stringGen(), u'actionType': actionTypeGen(), u'metaName': stringGen(),
+                 u'taskName': stringGen()}  # генерируется словарь значений для полей класса
+    varOfClass = {x for x in dir(item) if
+                  not x.startswith('_') and x != 'messageFromClass'}  # получение переменных класса для заполнения
+    compliteSet = setOfParams.intersection(varOfClass)
     for key in eventDesc.keys():  # пробежка по ключам словаря
-        if key in varOfClass:  # сравнение ключа с переменной, содержащейся в классе
-            varName = key  # отвечает за название поля класса
-            if varName is 'code':  # для нахождения кода
-                codeForMessage = eventDesc[
-                    varName]  # и записи его в переменную для описания кода в .messageFromClass
-            varValue = eventDesc[key]  # значение поля класса
-            item.__setattr__(varName, varValue)  # присвоение значения
+        if key in compliteSet:  # сравнение ключа с переменной, содержащейся в классе
+            item.__setattr__(key, eventDesc[key])  # присвоение значения
         else:
             continue
     return item.messageFromClass(
@@ -125,7 +143,8 @@ def generationEvents():
 
 
 if __name__ == '__main__':
-    x = generationEvents()
+    for i in xrange(12):
+        x = generationEvents()
     print type(x)
     for k, v in x.items():
         print k, '-----------', v
