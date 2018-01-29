@@ -31,7 +31,7 @@ def insertingIntoBD(numbers):
     for i in xrange(numbers):
         db.Events.insert(generationEvents())
         if i % 1000 == 0:
-            print 'прошло 1000 записей'
+            print 'прошло {} записей' .format(i)
     print 'program finished'
     client.close()
 
