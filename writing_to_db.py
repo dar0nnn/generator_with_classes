@@ -13,7 +13,7 @@ def timeit(method):
         ts = time.time()
         result = method(*args, **kw)
         te = time.time()
-        print('%r  %2.2f ms' % (method.__name__, (te - ts) * 1000))
+        print(u'%r  %2.2f s' % (method.__name__, (te - ts) / 60))
         return result
 
     return timed
@@ -34,8 +34,8 @@ def writingDirectlyToMongo(numbers):
         for i in xrange(numbers):
             db.Events.insert(generationEvents())
             if i % 1000 == 0:
-                print 'прошло {} записей'.format(i)
-        print 'program finished'
+                print u'прошло {} записей'.format(i)
+        print u'program finished'
     finally:
         client.close()
 
@@ -47,21 +47,35 @@ def myconverter(o):  # to convert data in str
 
 @timeit
 def writingJson(numbers):
-    listOfDicts = []
+    """запись данных в 10 json файлов"""
+    # listOfDicts = []
     dictForJson = {}
-    FILENAME = 'result.json'
-    with open(FILENAME, 'w') as fp:
-        for i in xrange(numbers):
-            dictFromClass = generationEvents()
-            listOfDicts.append(dictFromClass)
-            if i % 1000 == 0:
-                print 'прошло {} генераций события и записи в лист'.format(i)
-        dictForJson['A'] = listOfDicts
-        json.dump(dictForJson, fp, default=myconverter)
-
+    FILENAME0 = 'result0.json'
+    FILENAME1 = 'result1.json'
+    FILENAME2 = 'result2.json'
+    FILENAME3 = 'result3.json'
+    FILENAME4 = 'result4.json'
+    FILENAME5 = 'result5.json'
+    FILENAME6 = 'result6.json'
+    FILENAME7 = 'result7.json'
+    FILENAME8 = 'result8.json'
+    FILENAME9 = 'result9.json'
+    listOfFiles = (
+        FILENAME0, FILENAME1, FILENAME2, FILENAME3, FILENAME4, FILENAME5, FILENAME6, FILENAME7, FILENAME8, FILENAME9)
+    for file_ in listOfFiles:
+        with open(file_, 'w') as fp:
+            listOfDicts = []
+            for i in xrange(numbers / 10):
+                dictFromClass = generationEvents()
+                listOfDicts.append(dictFromClass)
+                if i % 1000 == 0:
+                    print u'прошло {} генераций события и записи в лист'.format(i)
+            dictForJson['A'] = listOfDicts
+            json.dump(dictForJson, fp, default=myconverter)
 
 @timeit
 def writingMongoFromJson():
+    """чтение 10 json файлов и запись их в бд"""
     try:
         try:
             client = MongoClient('192.168.62.129', 27017)
@@ -71,12 +85,24 @@ def writingMongoFromJson():
         except Exception as e:
             print e
             client.close()
-        FILENAME = 'result.json'
-        with open(FILENAME, 'r') as fp:
-            parsed = json.loads(fp.read())  # <--- dict
-            for dictForMongo in parsed.values():  # parsed.values возвращает лист словарей,
-                # проход по этому листу и вытягивание одного словаря
-                db.Events.insert(dictForMongo)
+        FILENAME0 = 'result0.json'
+        FILENAME1 = 'result1.json'
+        FILENAME2 = 'result2.json'
+        FILENAME3 = 'result3.json'
+        FILENAME4 = 'result4.json'
+        FILENAME5 = 'result5.json'
+        FILENAME6 = 'result6.json'
+        FILENAME7 = 'result7.json'
+        FILENAME8 = 'result8.json'
+        FILENAME9 = 'result9.json'
+        listOfFiles = (
+        FILENAME0, FILENAME1, FILENAME2, FILENAME3, FILENAME4, FILENAME5, FILENAME6, FILENAME7, FILENAME8, FILENAME9)
+        for file__ in listOfFiles:
+            with open(file__, 'r') as fp:
+                parsed = json.loads(fp.read())  # <--- dict
+                for dictForMongo in parsed.values():  # parsed.values возвращает лист словарей,
+                    # проход по этому листу и вытягивание одного словаря
+                    db.Events.insert(dictForMongo)
     finally:
         client.close()
 
