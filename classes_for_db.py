@@ -13,7 +13,7 @@ class Events(object):
 
     def messageFromClass(self, description):  # returning event with dic in child classes
         """возврат словаря поле класса - значение и описания события"""
-        attrsNamesList = ['created', 'code', 'category', 'sourceType', 'sourceId', 'severity']
+        attrsNamesList = [u'created', u'code', u'category', u'sourceType', u'sourceId', u'severity']
         vars = [x for x in dir(self) if
                 not x.startswith('_') and x != 'messageFromClass']  # getting all vars of class to dic
         var_dict = {}
@@ -26,8 +26,8 @@ class Events(object):
                     params_dict[var] = getattr(self, var)
                 else:
                     var_dict[var] = getattr(self, var)  # filling dic with needed vars of this event
-        var_dict['params'] = params_dict
-        var_dict['description'] = description
+        var_dict[u'params'] = params_dict
+        var_dict[u'description'] = description
         return var_dict
 
 

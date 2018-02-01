@@ -61,8 +61,14 @@ class UnicodeWriter:
     def writerows(self, rows):
         for row in rows:
             self.writerow(row)
+db.Events.find({"created": {"$gte": ISODate("2017-11-12T00:00:00Z"), "$lt": ISODate("2017-11-16T00:00:00Z")}})
 
 class UnicodeDictWriter(csv.DictWriter, object):
     def __init__(self, f, fieldnames, restval="", extrasaction="raise", dialect="excel", *args, **kwds):
         super(UnicodeDictWriter, self).__init__(f, fieldnames, restval="", extrasaction="raise", dialect="excel", *args, **kwds)
         self.writer = UnicodeWriter(f, dialect, **kwds)
+
+def UnicodeDictReader(utf8_data, **kwargs):
+    csv_reader = csv.DictReader(utf8_data, **kwargs)
+    for row in csv_reader:
+        yield {unicode(key, 'utf-8'):unicode(value, 'utf-8') for key, value in row.iteritems()}
