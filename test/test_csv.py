@@ -1,35 +1,54 @@
 # -*- coding: UTF-8 -*-
+import pprint
+
+import testDictWriter as dictWrite
+
 from pymongo import MongoClient
-from bson import json_util
 from vars_for_classes import generationEvents as gen
 import pandas as pd
 import json
 
-FILENAME = "events.json"
-listOfDict = []
+FILENAME = "result.csv"
 
-se = pd.Series()
-with open('result.csv', 'w') as fp:
-    for i in xrange(100):
-        df = pd.DataFrame.from_dict(gen())
-        df.to_csv(columns='index')
-        print i
+dictForCsv = {}
+dictForCsv = gen()
+listOfValue = []
+with open('result.csv', 'wb') as fp:
+    dictKey = sorted(dictForCsv.keys())
+    w = dictWrite.UnicodeDictWriter(fp, dictKey)
+    w.writeheader()
+    for i in xrange(12):
+        for k in dictKey:
+            itemfromdict = dictForCsv[k]
+            listOfValue.append(itemfromdict)
+        w.writerow(listOfValue)
+
+def read_file_line_by_line(file_):
+  with open(file_, 'r') as fp:
+      while True:
+        line = fp.readline()
+        if not line:
+          break
+        yield line
 
 try:  # подключение к бд
     client = MongoClient('192.168.62.129', 27017)
-    db = client.Events
-    events = db.Events
+    db = client.Events1
+    events = db.Events1
     events.delete_many({})
 except Exception as e:
     print e
     client.close()
-#
-# eventsFromJson = open('result.json', 'r')
-# parsed = json.loads(eventsFromJson.read())
-#
-# for item in parsed['records']:
-#     db.Events.insert(item)
-#
-df = pd.read_csv(FILENAME, sep='\t', encoding='utf-8')
-
-db.Events.insert_many(df.to_dict('records'))
+with open('result.csv', 'r') as fp:
+    r = dictWrite.UnicodeReader(fp)
+    x = r.next()
+    print x
+    dictForMongo = {}
+    for word in x:
+        dictForMongo[word] = None
+    dictKey = (k for k in dictForMongo.keys())
+    print dictForMongo.keys()
+    y = r.next()
+    for item in y:
+       dictForMongo[dictKey.next()] = item
+    print dictForMongo

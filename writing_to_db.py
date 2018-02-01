@@ -1,11 +1,13 @@
 # -*- coding: UTF-8 -*-
 import json
 import time
-
+import customDictWriterForCsv as dictWriterReader
 import datetime
 from pymongo import MongoClient
 from vars_for_classes import generationEvents
 
+FIELDNAMESFORCSV = ('category','code','sourceType','created','sourceId','description','params','severity')
+FILECSV = 'result.csv'
 FILENAME0 = 'result0.json'
 FILENAME1 = 'result1.json'
 FILENAME2 = 'result2.json'
@@ -56,6 +58,18 @@ def dateToSting(dateFromClass):  # функция для json.dump что бы �
     if isinstance(dateFromClass, datetime.datetime):
         return dateFromClass.__str__()
 
+@timeit
+def writingToCsv(numbers):
+    dictForCsv = {}
+    with open(FILECSV, 'w') as fp:
+        w = dictWriterReader.UnicodeDictWriter(fp, fieldnames=FIELDNAMESFORCSV)
+        w.writeheader()
+        for i in xrange(numbers):
+            dictForCsv = generationEvents()
+            w.writerow(dictForCsv)
+            if i % 1000 == 0:
+                print u'записано в csv: {} событий'.format(i)
+
 
 @timeit
 def writingJson(numbers):
@@ -86,7 +100,7 @@ def writingMongoFromJson():
             client.close()
         for file__ in listOfFiles:
             with open(file__, 'r') as fp:
-                print 'открыт {}'.format(file__)
+                print u'открыт {}'.format(file__)
                 parsed = json.loads(fp.read())  # <--- dict
                 for dictForMongo in parsed.values():  # parsed.values возвращает лист словарей,
                     # проход по этому листу и вытягивание одного словаря
@@ -105,4 +119,4 @@ def writingJsonAndMongo(numbers):
 
 if __name__ == '__main__':
     numbers = int(raw_input('> '))
-    writingJsonAndMongo(numbers)
+    writingToCsv(numbers)
