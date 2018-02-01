@@ -92,23 +92,20 @@ def writingMongoFromJson():
     try:
         try:
             client = MongoClient('192.168.62.129', 27017)
-            db = client.Events1
-            events = db.Events1
+            db = client.Events
+            events = db.Events
             events.delete_many({})  # стирает записи из бд!!!
         except Exception as e:
             print e
             client.close()
         for file__ in listOfFiles:
-            with open(FILENAME0, 'r') as fp:
-                print u'открыт {}'.format(FILENAME0)
+            with open(file__, 'r') as fp:
+                print u'открыт {}'.format(file__)
                 parsed = json.loads(fp.read())  # <--- dict
                 for dictForMongo in parsed.values():  # parsed.values возвращает лист словарей,
                     # проход по этому листу и вытягивание одного словаря
-                    print type(dictForMongo)
                     for item in dictForMongo:
-                        print type(item)
                         date = item['created']
-                        print date
                         item['created'] = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S') # date to ISODate
                         db.Events.insert(item)
     except Exception as e:
@@ -125,4 +122,4 @@ def writingJsonAndMongo(numbers):
 
 if __name__ == '__main__':
     numbers = int(raw_input('> '))
-    writingToCsv(numbers)
+    writingJsonAndMongo(numbers)
