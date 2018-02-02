@@ -23,9 +23,15 @@ class Events(object):
                 continue
             else:
                 if var not in attrsNamesList:
-                    params_dict[var] = getattr(self, var)
+                    if getattr(self, var) is int:
+                        params_dict[var] = getattr(self, var)
+                    else:
+                        params_dict[var] = unicode(getattr(self, var))
                 else:
-                    var_dict[var] = getattr(self, var)  # filling dic with needed vars of this event
+                    if getattr(self,var) is int:
+                        var_dict[var] = getattr(self, var)  # filling dic with needed vars of this event
+                    else:
+                        var_dict[var] = unicode(getattr(self, var))  # filling dic with needed vars of this event
         var_dict[u'params'] = params_dict
         var_dict[u'description'] = description
         return var_dict

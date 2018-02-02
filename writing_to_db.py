@@ -5,6 +5,11 @@ import customDictWriterForCsv as dictWriterReader
 import datetime
 from pymongo import MongoClient
 from vars_for_classes import generationEvents
+import sys, locale, re
+reload(sys)
+sys.setdefaultencoding('utf-8')
+locale.setlocale(locale.LC_ALL, '')
+
 
 FIELDNAMESFORCSV = ('category','code','sourceType','created','sourceId','description','params','severity')
 FILECSV = 'result.csv'
@@ -116,7 +121,7 @@ def writingMongoFromJson():
 
 @timeit
 def writingJsonAndMongo(numbers):
-    writingJson(numbers)
+    # writingJson(numbers)
     writingMongoFromJson()
 
 

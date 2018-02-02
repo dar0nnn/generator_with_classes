@@ -25,20 +25,26 @@ with codecs.open(FILENAME, 'w') as fp:
             print u'записано в csv: {} событий'.format(i)
 
 
-try:  # подключение к бд
-    client = MongoClient('192.168.62.129', 27017)
-    db = client.Events1
-    events = db.Events1
-    events.delete_many({})
-except Exception as e:
-    print e
-    client.close()
+
 try:
+    try:  # подключение к бд
+        client = MongoClient('192.168.62.129', 27017)
+        db = client.Events
+        events = db.Events
+        events.delete_many({})
+    except Exception as e:
+        print e
+        client.close()
     with open('result.csv', 'r') as fp:
+        listOfDicts = []
         r = csv.DictReader(fp)
+
         for row in r:
+            for k, v in row["params"].items():
+                row[k] = v
+                print k, v
             print row
-            db.Events1.insert(row)
+            db.Events.insert(row)
 finally:
     client.close()
     # print x
@@ -51,3 +57,6 @@ finally:
     # for item in y:
     #    dictForMongo[dictKey.next()] = item
     # print dictForMongo
+
+
+

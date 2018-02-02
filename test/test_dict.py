@@ -44,32 +44,37 @@ def writingJson(numbers):
 def writingMongoFromJson():
     """чтение 10 json файлов и запись их в бд"""
     try:
-        try:
-            client = MongoClient('192.168.62.129', 27017)
-            db = client.Events1
-            events = db.Events1
-            events.delete_many({})  # стирает записи из бд!!!
-        except Exception as e:
-            print e
-            client.close()
+        # try:
+        #     client = MongoClient('192.168.62.129', 27017)
+        #     db = client.Events1
+        #     events = db.Events1
+        #     events.delete_many({})  # стирает записи из бд!!!
+        # except Exception as e:
+        #     print e
+        #     client.close()
         for file__ in listOfFiles:
             with open(FILENAME0, 'r') as fp:
                 print u'открыт {}'.format(FILENAME0)
                 parsed = json.loads(fp.read())  # <--- dict
                 for dictForMongo in parsed.values():  # parsed.values возвращает лист словарей,
                     # проход по этому листу и вытягивание одного словаря
-                    print type(dictForMongo)
+                    # print type(dictForMongo)
+                    listOfDicts = []
                     for item in dictForMongo:
-                        print type(item)
+                        # print type(item)
                         date = item['created']
-                        print date
+                        # print date
                         item['created'] = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
-                        db.Events.insert(item)
+                        listOfDicts.append(item)
+                        print type(item)
+                        print type(listOfDicts)
+                        for item_ in listOfDicts:
+                            print item_
     except Exception as e:
         print e
-    finally:
-        client.close()
+    # finally:
+    #     client.close()
 
 if __name__ == '__main__':
-    writingJson(10)
+    writingJson(15)
     writingMongoFromJson()
