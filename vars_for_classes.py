@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import datetime
+import time
 import random
 from classes_for_db import ZCandUS, TKO, OM, PS, LinesAndTract, UsersAndRoles, JournalOfActions, \
     Documents, MetaData
@@ -55,8 +56,9 @@ dictIdDesc = {codeForBd[0]: u'Изменение ОС дополнительно
 def createdGen():  # рандомная дата
     startdate = datetime.date(2017, 01, 01)
     randomdate = startdate + datetime.timedelta(random.randint(1, 365))
-    time = datetime.time(random.randint(1, 23), random.randint(1, 59), random.randint(1, 59))
-    return datetime.datetime.combine(randomdate, time)
+    time_ = datetime.time(random.randint(1, 23), random.randint(1, 59), random.randint(1, 59))
+    time__ = datetime.datetime.combine(randomdate, time_)
+    return time.mktime(time__.timetuple())
 
 
 sourceIdValues = eventSourceDic.values()  # список id источников события
