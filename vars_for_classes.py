@@ -64,21 +64,21 @@ def createdGen():  # рандомная дата
 sourceIdValues = eventSourceDic.values()  # список id источников события
 stringGen = lambda: ''.join(
     random.choice(u'йцукенгшщзхъфывапролджэячсмитьбю') for i in range(random.randint(5, 10)))  # рандомный текст
-category_gen = lambda: random.choice(range(1, 5))  # # рандомная категория
-oper_status_gen = lambda: random.choice(range(1, 5))  # рандомный статус
-severityGen = lambda: random.choice(range(0, 3))  # рандомная важность
-sourceTypeGen = lambda: random.choice(range(0, 2))  # рандомный тип источника
+category_gen = lambda: random.choice(range(1, 6))  # # рандомная категория
+oper_status_gen = lambda: random.choice(range(1, 6))  # рандомный статус
+severityGen = lambda: random.choice(range(0, 4))  # рандомная важность
+sourceTypeGen = lambda: random.choice(range(0, 3))  # рандомный тип источника
 sourceIdGen = lambda: (random.choice(sourceIdValues) for i in
                        range(0, len(sourceIdValues)))  # generator!!! .next() генерация рандомного id источника
 codeGen = lambda: (random.choice(codeForBd) for i in
                    range(0, len(codeForBd)))  # generator!!! .next() рандомная генерация кода
-operationGen = lambda: random.choice(range(0, 1))
-admStatusGen = lambda: random.choice(range(0, 1))
-personStatusGen = lambda: random.choice(range(0, 4))
-lTypeGen = lambda: random.choice(range(0, 3))
-segmentGen = lambda: random.choice(range(0, 1))
-docTypeGen = lambda: random.choice(range(0, 8))
-actionTypeGen = lambda: random.choice(range(0, 13))
+operationGen = lambda: random.choice(range(0, 2))
+admStatusGen = lambda: random.choice(range(0, 2))
+personStatusGen = lambda: random.choice(range(0, 5))
+lTypeGen = lambda: random.choice(range(0, 4))
+segmentGen = lambda: random.choice(range(0, 2))
+docTypeGen = lambda: random.choice(range(0, 9))
+actionTypeGen = lambda: random.choice(range(0, 14))
 
 # шаблоны событий
 addseg_oper_status_changed = ZCandUS(code=u'1.1.1.10')

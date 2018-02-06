@@ -157,6 +157,7 @@ def writingToMongoFromCsv():
             db.Events.insert(row)
 
 
+@timeit
 def writingJsonAndCsv(numbers):
     """пишет одновременно в json и в csv одинаковые значения"""
     with open(FILECSV, 'w') as f:  # open csv
