@@ -21,12 +21,6 @@ try:
 except Exception as e:
     print e
 
-nov = datetime.datetime(2017, 11, 12, 00, 00, 00)
-dec = datetime.datetime(2017, 12, 31, 22, 00, 00)
-jan = datetime.datetime(2017, 01, 12)
-feb = datetime.datetime(2017, 02, 10)
-oct = datetime.datetime(2017, 10, 1)
-
 
 def timeit(method):
     def timed(*args, **kw):
@@ -41,46 +35,69 @@ def timeit(method):
 
 
 @timeit
-def findFirst():
-    """3249 события 25284 ms"""
-    nov_event = events.find({u'severity': u'1', u'sourceType': u'1', u'code': u'1.1.1.10', u'created': {u'$gt': nov},
-                             u"params.operStatus": u"1"})
-
-    print u'nov events ', nov_event.count()
+def simpleSmallCount():
+    smallVarFromMongo = events.find({u'severity': u'1', u'params.admStatus': u'0', u'code': u'1.1.1.6.11',
+                                     u'created': {u'$gt': datetime.datetime(2017, 12, 31, 23, 00, 00)}})
+    print u'простая маленькая выборка ', smallVarFromMongo.count()
 
 
 @timeit
-def findSecond():
-    """282 события 25114 ms"""
-    dec_event = events.find({u'severity': u'2', u'sourceType': u'0', u'code': u'1.1.1.6.11', u'created': {u'$gt': dec}})
-    print u'dec events ', dec_event.count()
+def simpleSmallListOfDicts():
+    list = []
+    smallVarFromMongo = events.find({u'severity': u'1', u'params.admStatus': u'0', u'code': u'1.1.1.6.11',
+                                     u'created': {u'$gt': datetime.datetime(2017, 12, 31, 23, 00, 00)}})
+    for items in smallVarFromMongo:
+        list.append(items)
+    print u'кол-во словарей в списке простая маленькая выборка: ', len(list)
 
 
 @timeit
-def findThird():
-    """2395 событий 24094 ms"""
-    janAndFebEvent = events.find({u'created': {"$gt": jan, "$lt": feb}, u'code': u'1.2.5', u'sourceType': u'0',
-                                  u'sourceId': u"сервер", u'severity': u'0'})
-    print u'jan and feb ', janAndFebEvent.count()
+def simpleBigCount():
+    bigVarFromMongo = events.find({u'severity': u'0', u'params.admStatus': u'0', u'code': u'1.1.1.6.11',
+                                   u'created': {u'$gt': datetime.datetime(2017, 05, 21, 12, 30, 00)}})
+    print u'простая большая выборка ', bigVarFromMongo.count()
 
 
 @timeit
-def findForth():
-    """70604 событий 24971 ms"""
-    oct_search = events.find({u'created': {"$gt": oct}, u'code': u'1.1.1.7.1.8', u'sourceType': u'1'})
-    print u'oct search ', oct_search.count()
+def simpleBigListOfDicts():
+    list = []
+    bigVarFromMongo = events.find({u'severity': u'0', u'params.admStatus': u'0', u'code': u'1.1.1.6.11',
+                                   u'created': {u'$gt': datetime.datetime(2017, 05, 21, 12, 30, 00)}})
+    for items in bigVarFromMongo:
+        list.append(items)
+    print u'кол-во словарей в списке простая большая выборка: ', len(list)
 
+
+@timeit
+def complexBigCount():
+    bigVarFromMongo = events.find(
+        {u'category': u"3", u'created': {u'$gt': datetime.datetime(2017, 05, 1),
+                                         u'$lt': datetime.datetime(2017, 10, 31)}, u'code': u'1.1.1.9',
+         u'params.services': u"0", u'sourceType': u"0", u"code": u"1.1.1.9"})
+    print u'кол-во словарей в сложной большая выборке', bigVarFromMongo.count()
+
+@timeit
+def complexBigListOfDicts():
+    list = []
+    bigVarFromMongo = events.find(
+        {u'category': u"3", u'created': {u'$gt': datetime.datetime(2017, 05, 1),
+                                         u'$lt': datetime.datetime(2017, 10, 31)}, u'code': u'1.1.1.9',
+         u'params.services': u"0", u'sourceType': u"0", u"code": u"1.1.1.9"})
+    for items in bigVarFromMongo:
+        list.append(items)
+    print u'кол-во словарей в списке сложная большая выборка: ', len(list)
 
 @timeit
 def totalTime():
     """total time: 99466 ms"""
-    findFirst()
-    findSecond()
-    findThird()
-    findForth()
+    simpleSmallCount()
+    simpleSmallListOfDicts()
+    simpleBigCount()
+    simpleBigListOfDicts()
     print u'end of total time func'
     client.close()
 
 
 if __name__ == '__main__':
-    totalTime()
+    complexBigCount()
+    complexBigListOfDicts()
