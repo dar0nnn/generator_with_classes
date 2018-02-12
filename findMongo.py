@@ -14,6 +14,7 @@ locale.setlocale(locale.LC_ALL, '')
 # для тестов mongo
 # определять время поиска по бд
 
+
 try:
     client = MongoClient('192.168.62.129', 27017)
     db = client.Events
@@ -28,7 +29,7 @@ def timeit(method):
         ts = time.time()
         result = method(*args, **kw)
         te = time.time()
-        print(u'%r  %2.2f ms' % (method.__name__, (te - ts) * 10000))
+        print(u'%r  %2.2f s' % (method.__name__, (te - ts)))
         return result
 
     return timed
@@ -69,35 +70,87 @@ def simpleBigListOfDicts():
 
 
 @timeit
+def complexSmallCount():
+    smallVarFromMongo = events.find(
+        {u'category': u'3', u'created': {u'$gt': datetime.datetime(2017, 05, 2),
+                                         u'$lte': datetime.datetime(2017, 05, 24)},
+         u'$and': [{u'sourceType': u'2'}, {u'sourceId': u'дополнительный сегмент'}],
+         u'$or': [{u'code': u'1.1.2.6.5'}, {u'code': u'1.1.2.6.6'}], u'severity': u'2',
+         u'$and': [{u'params.lType': u'0'},
+                   {u'params.operStatus': u'3'}, {u'params.segment': u'0'}]})
+    print u'сложная маленькая выборка: ', smallVarFromMongo.count()
+
+
+@timeit
+def complexSmallListOfDicts():
+    list = []
+    bigVarFromMongo = events.find(
+        {u'category': u'3', u'created': {u'$gt': datetime.datetime(2017, 05, 2),
+                                         u'$lte': datetime.datetime(2017, 05, 24)},
+         u'$and': [{u'sourceType': u'2'}, {u'sourceId': u'дополнительный сегмент'}],
+         u'$or': [{u'code': u'1.1.2.6.5'}, {u'code': u'1.1.2.6.6'}], u'severity': u'2',
+         u'$and': [{u'params.lType': u'0'},
+                   {u'params.operStatus': u'3'}, {u'params.segment': u'0'}]})
+    for items in bigVarFromMongo:
+        list.append(items)
+    print u'кол-во словарей в списке сложная маленькая выборка: ', len(list)
+
+
+@timeit
 def complexBigCount():
     bigVarFromMongo = events.find(
-        {u'category': u"3", u'created': {u'$gt': datetime.datetime(2017, 05, 1),
-                                         u'$lt': datetime.datetime(2017, 10, 31)}, u'code': u'1.1.1.9',
-         u'params.services': u"0", u'sourceType': u"0", u"code": u"1.1.1.9"})
-    print u'кол-во словарей в сложной большая выборке', bigVarFromMongo.count()
+        {u'category': u'1', u'created': {u'$gt': datetime.datetime(2017, 05, 1),
+                                         u'$lte': datetime.datetime(2017, 10, 31)},
+         u'$or': [{u'params.lType': u'0', u'params.operStatus': u'3', u'params.segment': u'0'}, {u'params.lType': u'2',
+                                                                                                 u'params.operStatus': u'2',
+                                                                                                 u'params.segment': u'1'}],
+         u'sourceType': u"0",
+         u'$or': [{u'code': u'1.1.2.6.5'}, {u'code': u'1.1.2.6.6'}]})
+    print u'сложная большая выборка: ', bigVarFromMongo.count()
+
 
 @timeit
 def complexBigListOfDicts():
     list = []
     bigVarFromMongo = events.find(
-        {u'category': u"3", u'created': {u'$gt': datetime.datetime(2017, 05, 1),
-                                         u'$lt': datetime.datetime(2017, 10, 31)}, u'code': u'1.1.1.9',
-         u'params.services': u"0", u'sourceType': u"0", u"code": u"1.1.1.9"})
+        {u'category': u'1', u'created': {u'$gt': datetime.datetime(2017, 05, 1),
+                                         u'$lt': datetime.datetime(2017, 10, 31)},
+         u'$or': [{u'params.lType': u'0', u'params.operStatus': u'3', u'params.segment': u'0'}, {u'params.lType': u'2',
+                                                                                                 u'params.operStatus': u'2',
+                                                                                                 u'params.segment': u'1'}],
+         u'sourceType': u"0",
+         u'$or': [{u'code': u'1.1.2.6.5'}, {u'code': u'1.1.2.6.6'}]})
     for items in bigVarFromMongo:
         list.append(items)
     print u'кол-во словарей в списке сложная большая выборка: ', len(list)
 
+
+@timeit
+def regexSearch():
+    smallVarFromMongo = events.find(
+        {u'$or': [{u'category': u'1'}, {u'category': u'3'}],
+         u'$and': [{u'sourceType': u'0'}, {u'sourceId': u'дополнительный сегмент'}],
+         u'$or': [{u'code': u'1.1.2.6.5'}, {u'code': '1.1.2.6.6'}], u'severity': u'2',
+         u'$and': [{u'params.lType': u'0'},
+                   {u'params.operStatus': u'3'}, {u'params.lName': {u'$regex': u"лол"}}],
+         u'$or': [{u'params.segment': u'0'}, {u'params.segment': u'1'}]})
+    print u'сложная маленькая выборка: ', smallVarFromMongo.count()
+
+
 @timeit
 def totalTime():
-    """total time: 99466 ms"""
-    simpleSmallCount()
-    simpleSmallListOfDicts()
-    simpleBigCount()
-    simpleBigListOfDicts()
+    simpleSmallCount()  # простая маленькая кол-во
+    simpleSmallListOfDicts()  # простая маленькая в переменную
+    simpleBigCount()  # простая большая кол-во
+    simpleBigListOfDicts()  # простая большая в переменную
+    complexSmallCount()  # сложная маленькая кол-во
+    complexSmallListOfDicts()  # сложная маленькая в переменную
+    complexBigCount()  # сложная большая кол-во
+    complexBigListOfDicts()  # сложная большая в переменную
+    regexSearch()  # поиск по фразе в тексте с кучей параметров
     print u'end of total time func'
     client.close()
 
 
 if __name__ == '__main__':
-    complexBigCount()
-    complexBigListOfDicts()
+    totalTime()
