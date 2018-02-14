@@ -134,7 +134,7 @@ def regexSearch():
          u'$and': [{u'params.lType': u'0'},
                    {u'params.operStatus': u'3'}, {u'params.lName': {u'$regex': u"лол"}}],
          u'$or': [{u'params.segment': u'0'}, {u'params.segment': u'1'}]})
-    print u'сложная маленькая выборка: ', smallVarFromMongo.count()
+    print u'поиск по тексту: ', smallVarFromMongo.count()
 
 
 @timeit
