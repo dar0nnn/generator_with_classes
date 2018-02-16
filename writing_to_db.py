@@ -140,9 +140,9 @@ def writingToMongoFromCsv():
     except Exception as e:
         print e
     with open('result.csv', 'rb') as fp:
-        dictOfParams = {}
         reader = csv.DictReader(fp)
         for row in reader:
+            dictOfParams = {}
             for k, v in row.items():
                 if k not in vars:
                     if v != '':
@@ -193,5 +193,4 @@ def writingJsonAndMongo(numbers):
 
 if __name__ == '__main__':
     numbers = int(raw_input('> '))
-    writingJsonAndCsv(numbers)
-    writingMongoFromJson()
+    writingToCsv(numbers)
