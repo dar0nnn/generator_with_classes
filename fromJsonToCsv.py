@@ -30,12 +30,13 @@ FIELDNAMESFORCSV = (
 
 
 def writingCsvFromJson():
-    with open('resulting.csv', 'w') as f:
+    with open('result.csv', 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDNAMESFORCSV)
+        writer.writeheader()
         for file__ in listOfFiles:
+            print file__
             with open(file__, 'r') as fp:
                 data = json.load(open(file__))
-            writer = csv.DictWriter(f, fieldnames=FIELDNAMESFORCSV)
-            writer.writeheader()
             dictForCsv = data
             for item in dictForCsv['A']:
                 for k, v in item.items():
@@ -44,6 +45,7 @@ def writingCsvFromJson():
                             item[key_] = value_
                 item.pop(u'params', None)
                 writer.writerow(item)
+            print 'finish: ' + file__
 
 if __name__ == '__main__':
     writingCsvFromJson()

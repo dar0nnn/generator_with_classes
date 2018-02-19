@@ -32,12 +32,11 @@ def main(cursor):
             row[u"code"], row[u"created"], row[u"sourceType"], row[u"sourceId"], row[u"category"], row[u"severity"],
             row[u"description"], row[u"params"]))
             id_ = cursor.fetchall()
-            if id_[0]['event_id'] % 100 == 0:
+            if id_[0]['event_id'] % 1000 == 0:
                 print id_
             else:
                 continue
 
-#TODO нужно сделать csv из json. прям очень нужно иначе все плохо
 if __name__ == '__main__':
     vars = [u'created', u'code', u'category', u'sourceType', u'sourceId', u'severity', u'description']
     # atttrs = [u'code', u'created',u'sourceType', u'sourceId' , u'category', u'severity', u'description', u'params']
