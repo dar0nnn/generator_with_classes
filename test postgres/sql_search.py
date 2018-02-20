@@ -58,7 +58,7 @@ class FindForFindPostgres(FindForTimeMongo):
     @timeit
     def simpleBigListOfDicts(self):
         listOfFinded = []
-        statement = '''select count(*) from "Events" where
+        statement = '''select * from "Events" where
                        ("params" -> 'admStatus' like '%0%') and
                        ("code" like '%1.1.1.6.11%') and
                        ("severity" like '%1%') and
@@ -107,15 +107,6 @@ class FindForFindPostgres(FindForTimeMongo):
         for item in finded:
             listOfFinded.append(item)
         print u'кол-во словарей в списке сложная маленькая выборка: ', len(listOfFinded)
-
-    # {u'category': u'1', u'created': {u'$gt': datetime.datetime(2017, 05, 1),
-    #                                  u'$lte': datetime.datetime(2017, 10, 31)},
-    #  u'$or': [{u'params.lType': u'0', u'params.operStatus': u'3', u'params.segment': u'0'}, {u'params.lType': u'2',
-    #                                                                                          u'params.operStatus': u'2',
-    #                                                                                          u'params.segment': u'1'}],
-    #  u'sourceType': u"0",
-    #  u'$or': [{u'code': u'1.1.2.6.5'}, {u'code': u'1.1.2.6.6'}]})
-
 
     @timeit
     def complexBigCount(self):
